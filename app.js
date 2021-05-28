@@ -6,7 +6,7 @@ import { badRequest, catchAll, forbidden, notFound } from "./src/util/errorHandl
 
 const app = express()
 
-const {port} =  process.env
+const {PORT} =  process.env
 const whiteList = [process.env.WHITELIST_DEV_URL, process.env.WHITELIST_PROD_URL]
 
 const corsOptions = {
@@ -28,6 +28,6 @@ app.use(express.json())
 
 app.use(badRequest, forbidden, notFound, catchAll)
 
-app.listen(port, () => {
-  console.log("Listening on port " + port)
+app.listen(PORT, () => {
+  console.log("Listening on port " + PORT)
 })
