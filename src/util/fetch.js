@@ -14,11 +14,16 @@ export const getMovie = async(id) => {
   
 }
 
-export const getQueryResult = async(query) => {
-  try {
-    const res = await fetch(
-      `http://www.omdbapi.com/?s=${query}&apikey=${process.env.OMDB_API_KEY}`
-    );
+export const getQueryResult = async(query, series="") => {
+  let url =""
+  if(series) {
+    url = `http://www.omdbapi.com/?s=break&apikey=${process.env.OMDB_API_KEY}&${series}`
+  }else{
+    url = `http://www.omdbapi.com/?s=${query}&apikey=${process.env.OMDB_API_KEY}`
+  }
+  console.log('url:', url)
+    try {
+    const res = await fetch(url);
     if (!res.ok) throw new Error()
     const data = await res.json();
     return data

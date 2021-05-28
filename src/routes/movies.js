@@ -34,9 +34,13 @@ mr.get("/:id", async (req, res,next) => {
 mr.get("/search/:query", async (req, res,next) => {
   try {
     // const item = await getSingleItem(filePath, req.params.id)
-    console.log('req.params.search:', req.params.query)
-    const result = await getQueryResult(req.params.query)
-    result?res.status(200).send(result):next(createError(404, {"message": "notFound"}))
+    if(req.params.query.includes("&")){
+      const result = await getQueryResult(req.params.query, req.params.query.split("&")[1])
+      result?res.status(200).send(result):next(createError(404, {"message": "notFound"}))
+    }else{
+      const result = await getQueryResult(req.params.query)
+      result?res.status(200).send(result):next(createError(404, {"message": "notFound"}))
+    }
   } catch (error) {
     console.log(error)
     next(error)
