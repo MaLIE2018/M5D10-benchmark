@@ -5,6 +5,7 @@ import { checkMovieSchema, checkValidation } from "../util/validation.js"
 import {nanoid} from "nanoid"
 import {pipeline} from "stream"
 import { createPDF } from "../util/pdf.js"
+import { getMovie, getQueryResult } from "../util/fetch.js"
 const mr = express.Router()
 
 const filePath = getFilePath("movies.json")
@@ -21,8 +22,21 @@ mr.get("/", async (req, res,next) => {
 })
 mr.get("/:id", async (req, res,next) => {
   try {
-    const item = await getSingleItem(filePath, req.params.id)
+    // const item = await getSingleItem(filePath, req.params.id)
+    const item = await getMovie(req.params.id)
     item?res.status(200).send(item):next(createError(404, {"message": "notFound"}))
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
+mr.get("/search/:query", async (req, res,next) => {
+  try {
+    // const item = await getSingleItem(filePath, req.params.id)
+    console.log('req.params.search:', req.params.query)
+    const result = await getQueryResult(req.params.query)
+    result?res.status(200).send(result):next(createError(404, {"message": "notFound"}))
   } catch (error) {
     console.log(error)
     next(error)

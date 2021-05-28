@@ -1,5 +1,5 @@
 import express from "express"
-import { getFilePath, getItems, getItemsExceptItem, getSingleItem, writeItems } from "../util/fs-tools.js"
+import { getFilePath, getItems, getItemsExceptItem, getItemsWithMovieID, getSingleItem, writeItems } from "../util/fs-tools.js"
 import {nanoid} from "nanoid"
 import { checkCommentSchema, checkValidation } from "../util/validation.js"
 import createHttpError from "http-errors"
@@ -21,7 +21,7 @@ cr.delete("/:id", async(req, res,next) => { //_id
 
 cr.get("/:id", async(req, res,next) => { //IMDBID
   try {
-    const comments = await getItems(filePath)
+    const comments = await getItemsWithMovieID(filePath, req.params.id)
     res.status(200).send(comments)
   } catch (error) {
     console.log(error)

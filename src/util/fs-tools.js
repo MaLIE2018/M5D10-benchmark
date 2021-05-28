@@ -16,6 +16,12 @@ export const getSingleItem = async(filePath, id, field="imdbID") => {
   return item
 }
 
+export const getItemsWithMovieID = async(filePath, id, field="imdbID") => {
+  const items = await fs.readJSON(filePath)
+  const item = items.filter(item => item[field] === id)
+  return item
+}
+
 
 export const getItemsExceptItem = async(filePath, id, field="imdbID") => {
   const items = await fs.readJSON(filePath)
