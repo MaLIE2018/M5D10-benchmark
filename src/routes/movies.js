@@ -2,7 +2,6 @@ import express from "express"
 import createError from "http-errors"
 import { getFilePath, getItems, getSingleItem,getItemsExceptItem, writeItems } from "../util/fs-tools.js"
 import { checkMovieSchema, checkValidation } from "../util/validation.js"
-import {nanoid} from "nanoid"
 import {pipeline} from "stream"
 import { createPDF } from "../util/pdf.js"
 import { getMovie, getQueryResult } from "../util/fetch.js"
@@ -49,7 +48,8 @@ mr.get("/search/:query", async (req, res,next) => {
 
 mr.get("/:id/pdf", async (req, res,next) => {
   try {
-    const item = await getSingleItem(filePath, req.params.id)
+    let item = await getSingleItem(filePath, req.params.id)
+    !item?item = await getMovie(req.params.id):null
     if(item){
       res.setHeader("Content-Disposition", `attachment; filename=${item.Title}.pdf`)
       const stream = await createPDF(item)
@@ -79,7 +79,7 @@ mr.put("/:id",checkMovieSchema,checkValidation, async (req, res,next) => {
 mr.post("/",checkMovieSchema,checkValidation,async (req, res,next) => {
   try {
     const movies = await getItems(filePath)
-    const newItem = {...req.body, imdbID:nanoid()}
+    const newItem = {...req.body}
     movies.push(newItem)
     await writeItems(filePath,movies)
     res.status(201).send({imdbID:newItem.imdbID})

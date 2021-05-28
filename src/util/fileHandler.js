@@ -20,11 +20,15 @@ const parser = multer({ storage: storage });
 fr.post('/:id/upload', parser.single("cover"), async (req, res, next) =>{
     try {
       const item = await getSingleItem(filePath, req.params.id)
-      item?res.status(201).send({imdbID:item.imdbID}):next(createError(404, {"message": "notFound"}))
-      item.Poster = req.file.path
-      const items = await getItemsExceptItem(filePath, req.params.id)
-      items.push(item)
-      await writeItems(filePath,items)
+      if(item){
+        item.Poster = req.file.path
+        const items = await getItemsExceptItem(filePath, req.params.id)
+        items.push(item)
+        await writeItems(filePath,items)
+        res.status(201).send({imdbID:item.imdbID})
+      } else{
+        next(createError(404, {"message": "notFound"}))
+      }
   } catch (error) {
       next(error)
       console.log("fileUploadPOst", error)
