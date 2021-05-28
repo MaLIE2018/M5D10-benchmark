@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "123455",
+    "comment": "A good movie but definitely I don't like many parts of the plot",
+    "rate": 3,
+    "author": "Max",
+    "imdbID": "tt1201607",
+    "createdAt": "2019-08-01T12:46:45.895Z"
+  },
+  {
+    "_id": "123456",
+    "comment": "A good movie but definitely I don't like many parts of the plot",
+    "rate": 3,
+    "author": "Max",
+    "imdbID": "tt1201607",
+    "createdAt": "2019-08-01T12:46:45.895Z"
+  },
+  {
+    "_id": "123456",
+    "comment": "A good movie but definitely I don't like many parts of the plot",
+    "rate": 3,
+    "author": "Max",
+    "imdbID": "tt1201607",
+    "createdAt": "2019-08-01T12:46:45.895Z"
+  }
+]

@@ -2,6 +2,9 @@ import express from "express"
 import cors from "cors"
 import createError from "http-errors"
 import { badRequest, catchAll, forbidden, notFound } from "./src/util/errorHandler.js"
+import mr from "./src/routes/movies.js"
+import cr from "./src/routes/comments.js"
+import fr from "./src/util/fileHandler.js"
 
 
 const app = express()
@@ -21,6 +24,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 app.use(express.json())
+
+
+app.use("/movies", mr, fr)
+app.use("/comments",cr)
 
 app.use(badRequest, forbidden, notFound, catchAll)
 
