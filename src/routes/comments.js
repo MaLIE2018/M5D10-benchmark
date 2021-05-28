@@ -33,12 +33,14 @@ cr.get("/:id", async(req, res,next) => { //IMDBID
 cr.post("/:id",checkCommentSchema,checkValidation, async (req, res,next) => { //IMDBID
   try {
     const item = await getSingleItem(filePathMovies, req.params.id)
-    item?res.status(201).send({imdbID:item.imdbID}):next(createHttpError(404, {"message": "notFound"}))
+    // item?res.status(201).send({imdbID:item.imdbID}):next(createHttpError(404, {"message": "notFound"}))
     const comments = await getItems(filePath)
-    const newComment = {...req.body, _id:nanoid(), imdbID:item.imdbID, createdAt:new Date()}
+    const newComment = {...req.body, _id:nanoid(), imdbID:req.params.id, createdAt:new Date()}
     comments.push(newComment)
+    res.status(201).send({imdbID:req.params.id})
     await writeItems(filePath,comments)
   } catch (error) {
+    console.log(error)
     next(error)
   }
 })
